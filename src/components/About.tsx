@@ -1,4 +1,6 @@
 import React from 'react';
+import BorderGlow from './BorderGlow';
+import ShinyText from './ShinyText';
 
 const servicesData = [
   {
@@ -27,7 +29,9 @@ export const About: React.FC = () => {
   return (
     <article className="about active" data-page="about">
       <header>
-        <h2 className="h2 article-title">About me</h2>
+        <h2 className="h2 article-title">
+          <ShinyText text="About me" speed={3} />
+        </h2>
       </header>
 
       <section className="about-text">
@@ -50,7 +54,17 @@ export const About: React.FC = () => {
         <h3 className="h3 service-title">What i'm doing</h3>
         <ul className="service-list">
           {servicesData.map((service, index) => (
-            <li key={index} className="service-item">
+            <BorderGlow
+              key={index}
+              as="li"
+              borderRadius={14}
+              backgroundColor="var(--eerie-black-1)"
+              glowColor="45 100 72"
+              colors={['#ffdb70', '#e5a13c', '#ff8f00']}
+              edgeSensitivity={30}
+              className="w-full"
+              contentClassName="service-item-content relative z-[1]"
+            >
               <div className="service-icon-box">
                 <img src={service.icon} alt={`${service.title} icon`} width="40" />
               </div>
@@ -58,7 +72,7 @@ export const About: React.FC = () => {
                 <h4 className="h4 service-item-title">{service.title}</h4>
                 <p className="service-item-text">{service.text}</p>
               </div>
-            </li>
+            </BorderGlow>
           ))}
         </ul>
       </section>

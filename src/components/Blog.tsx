@@ -1,4 +1,5 @@
 import React from 'react';
+import ShinyText from './ShinyText';
 
 interface BlogPost {
   title: string;
@@ -35,7 +36,9 @@ export const Blog: React.FC = () => {
   return (
     <article className="blog active" data-page="kaggle">
       <header>
-        <h2 className="h2 article-title">Kaggle & Insights</h2>
+        <h2 className="h2 article-title">
+          <ShinyText text="Kaggle & Insights" speed={3} />
+        </h2>
       </header>
 
       <section className="blog-posts">

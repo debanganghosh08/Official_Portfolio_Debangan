@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from './Icon';
+import ShinyText from './ShinyText';
 
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,9 @@ export const Contact: React.FC = () => {
   return (
     <article className="contact active" data-page="contact">
       <header>
-        <h2 className="h2 article-title">Contact</h2>
+        <h2 className="h2 article-title">
+          <ShinyText text="Contact" speed={3} />
+        </h2>
       </header>
 
       {/* Mapbox */}

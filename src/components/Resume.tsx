@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from './Icon';
+import ShinyText from './ShinyText';
 
 interface TimelineItem {
   title: string;
@@ -60,7 +61,9 @@ export const Resume: React.FC = () => {
   return (
     <article className="resume active" data-page="resume">
       <header>
-        <h2 className="h2 article-title">Resume</h2>
+        <h2 className="h2 article-title">
+          <ShinyText text="Resume" speed={3} />
+        </h2>
       </header>
 
       {/* Education */}

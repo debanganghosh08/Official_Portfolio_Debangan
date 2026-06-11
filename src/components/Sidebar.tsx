@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from './Icon';
+import ShinyText from './ShinyText';
 
 export const Sidebar: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
@@ -12,12 +13,12 @@ export const Sidebar: React.FC = () => {
     <aside className={`sidebar ${isActive ? 'active' : ''}`} data-sidebar>
       <div className="sidebar-info">
         <figure className="avatar-box">
-          <img src="/assets/images/my_img.png" alt="Debangan Ghosh" width="110" style={{ borderRadius: '20px' }} />
+          <img src="/assets/images/my_img.png" alt="Debangan Ghosh" width="130" style={{ borderRadius: '20px' }} />
         </figure>
 
         <div className="info-content">
           <h1 className="name" title="Debangan Ghosh">
-            Debangan Ghosh
+            <ShinyText text="Debangan Ghosh" speed={3} />
           </h1>
           <p className="title">Data Scientist & Software Developer</p>
         </div>
