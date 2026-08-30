@@ -76,17 +76,38 @@
    */
 
   /* font-family */
-  --ff-poppins: 'Poppins', sans-serif;
+  /* The platform's own face first: on macOS/iOS this resolves to SF, which
+     already ships optical sizing, tracking tables and legibility tuning.
+     Inter is the closest-matching web fallback for everyone else. */
+  --ff-primary:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Inter', 'Segoe UI', system-ui, sans-serif;
 
-  /* font-size */
-  --fs-1: 24px;
-  --fs-2: 18px;
-  --fs-3: 17px;
-  --fs-4: 16px;
-  --fs-5: 15px;
-  --fs-6: 14px;
-  --fs-7: 13px;
-  --fs-8: 11px;
+  /* font-size — rem, not px, so a larger browser text size scales the
+     layout with the type instead of breaking it */
+  --fs-1: 1.5rem;     /* 24px */
+  --fs-2: 1.125rem;   /* 18px */
+  --fs-3: 1.0625rem;  /* 17px */
+  --fs-4: 1rem;       /* 16px */
+  --fs-5: 0.9375rem;  /* 15px */
+  --fs-6: 0.875rem;   /* 14px */
+  --fs-7: 0.8125rem;  /* 13px */
+  --fs-8: 0.6875rem;  /* 11px */
+
+  /* tracking — size-specific, never one value for every size. Letters read
+     too far apart as type grows, so large text tightens; small text opens up
+     slightly for legibility. */
+  --tracking-tight: -0.022em;   /* display / h2 */
+  --tracking-snug: -0.014em;    /* h3, name */
+  --tracking-normal: -0.006em;  /* h4, h5, ~16px */
+  --tracking-body: 0em;         /* body copy sits at zero */
+  --tracking-wide: 0.02em;      /* 11-12px uppercase labels */
+
+  /* leading — tracks size inversely: tight on headings, looser on body */
+  --leading-tight: 1.1;
+  --leading-snug: 1.28;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
 
   /* font-weight */
   --fw-300: 300;
@@ -155,7 +176,13 @@ input, textarea {
 
 :focus { outline-color: var(--orange-yellow-crayola); }
 
-html { font-family: var(--ff-poppins); }
+html {
+  font-family: var(--ff-primary);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
 body { background: transparent; }
 
@@ -167,12 +194,18 @@ body { background: transparent; }
   #REUSED STYLE
 \*-----------------------------------*/
 
+/**
+ * Material weight encodes hierarchy. These are the largest surfaces on the
+ * page, so they get the thickest blur and the deepest shadow; the bright top
+ * border is light catching the leading edge of the glass.
+ */
 .sidebar,
 article {
-  background: hsla(240, 2%, 12%, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: hsla(240, 2%, 11%, 0.72);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
   border: 1px solid var(--jet);
+  border-top-color: hsla(0, 0%, 100%, 0.14);
   border-radius: 20px;
   padding: 15px;
   box-shadow: var(--shadow-1);
@@ -210,14 +243,23 @@ article {
   z-index: -1;
 }
 
-.icon-box ion-icon { --ionicon-stroke-width: 35px; }
+/**
+ * Icons take their size from the text they sit beside, so a bump in the user's
+ * text size carries them along instead of leaving them stranded.
+ */
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
 
 article { display: none; }
 
-article.active {
-  display: block;
-  animation: fade 0.5s ease backwards;
-}
+article.active { display: block; }
+
+/* Transparent to layout: the article's percentage height still has to resolve
+   against .main-content once the sidebar and content columns stretch. */
+.page-transition { height: 100%; }
 
 @keyframes fade {
   0% { opacity: 0; }
@@ -232,15 +274,29 @@ article.active {
   text-transform: capitalize;
 }
 
-.h2 { font-size: var(--fs-1); }
+.h2 {
+  font-size: var(--fs-1);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
 
-.h3 { font-size: var(--fs-2); }
+.h3 {
+  font-size: var(--fs-2);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--leading-snug);
+}
 
-.h4 { font-size: var(--fs-4); }
+.h4 {
+  font-size: var(--fs-4);
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-snug);
+}
 
 .h5 {
   font-size: var(--fs-7);
   font-weight: var(--fw-500);
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-snug);
 }
 
 .article-title {
@@ -318,14 +374,10 @@ main {
   #SIDEBAR
 \*-----------------------------------*/
 
-.sidebar {
-  margin-bottom: 15px;
-  max-height: 140px;
-  overflow: hidden;
-  transition: var(--transition-2);
-}
-
-.sidebar.active { max-height: 435px; }
+/* The reveal is a spring in Sidebar.tsx now: a fixed-duration max-height
+   transition cannot be grabbed and reversed mid-flight, and max-height is not
+   a compositor-friendly property to animate. */
+.sidebar { margin-bottom: 15px; }
 
 .sidebar-info {
   position: relative;
@@ -345,8 +397,9 @@ main {
 .info-content .name {
   color: var(--white-2);
   font-size: var(--fs-3);
-  font-weight: var(--fw-500);
-  letter-spacing: -0.25px;
+  font-weight: var(--fw-600);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--leading-snug);
   margin-bottom: 10px;
 }
 
@@ -354,9 +407,10 @@ main {
   color: var(--white-1);
   background: var(--onyx);
   font-size: var(--fs-8);
-  font-weight: var(--fw-300);
+  font-weight: var(--fw-400);
+  letter-spacing: var(--tracking-wide);
   width: max-content;
-  padding: 3px 12px;
+  padding: 4px 12px;
   border-radius: 8px;
 }
 
@@ -392,16 +446,7 @@ main {
 
 .info_more-btn span { display: none; }
 
-.sidebar-info_more {
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition-2);
-}
-
-.sidebar.active .sidebar-info_more {
-  opacity: 1;
-  visibility: visible;
-}
+/* Visibility and height are driven by Motion; see Collapse.tsx. */
 
 .contacts-list {
   display: grid;
@@ -424,7 +469,9 @@ main {
 .contact-title {
   color: var(--light-gray-70);
   font-size: var(--fs-8);
+  font-weight: var(--fw-500);
   text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
   margin-bottom: 2px;
 }
 
@@ -447,6 +494,11 @@ main {
 .social-item .social-link {
   color: var(--light-gray-70);
   font-size: 18px;
+  padding: 8px;
+  margin: -8px;
+  transition:
+    color var(--transition-1),
+    transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 
@@ -460,17 +512,41 @@ main {
   #NAVBAR
 \*-----------------------------------*/
 
+/**
+ * Floating chrome, with content scrolling underneath rather than a fixed strip
+ * carved out of the page. It sits on top of the (already translucent) article,
+ * so it is deliberately darker and more opaque: stacking a light translucent
+ * surface on another collapses legibility.
+ */
 .navbar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: hsla(240, 1%, 17%, 0.75);
-  backdrop-filter: blur(10px);
+  background: hsla(240, 3%, 9%, 0.82);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--jet);
+  border-top-color: hsla(0, 0%, 100%, 0.16);
   border-radius: 12px 12px 0 0;
   box-shadow: var(--shadow-2);
   z-index: 5;
+}
+
+/**
+ * Scroll edge effect: a soft gradient where content meets the floating bar,
+ * instead of a hard 1px divider. Only rendered where the bar actually
+ * overlaps content.
+ */
+.navbar::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background: linear-gradient(to top, hsla(240, 6%, 3%, 0.5), transparent);
+  pointer-events: none;
 }
 
 .navbar-list {
@@ -485,13 +561,31 @@ main {
   color: var(--light-gray);
   font-size: var(--fs-8);
   padding: 20px 7px;
-  transition: color var(--transition-1);
+  transition:
+    color var(--transition-1),
+    transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .navbar-link:hover,
 .navbar-link:focus { color: var(--light-gray-70); }
 
 .navbar-link.active { color: var(--orange-yellow-crayola); }
+
+.navbar-item { position: relative; }
+
+.navbar-link { position: relative; }
+
+/* Painted underneath the label purely by source order, so the label needs no
+   z-index of its own and the button stays a single stacking context. */
+.navbar-indicator {
+  position: absolute;
+  inset: 12px -6px;
+  background: hsla(0, 0%, 100%, 0.08);
+  border: 1px solid hsla(0, 0%, 100%, 0.06);
+  border-radius: 10px;
+}
+
+.navbar-label { position: relative; }
 
 
 
@@ -507,7 +601,8 @@ main {
   color: var(--light-gray);
   font-size: var(--fs-6);
   font-weight: var(--fw-300);
-  line-height: 1.6;
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-relaxed);
 }
 
 .about-text p { margin-bottom: 15px; }
@@ -534,9 +629,21 @@ main {
   z-index: 1;
 }
 
-.service-icon-box { margin-bottom: 10px; }
+/**
+ * As a flex item with no basis of its own the box collapses to a few pixels,
+ * and the image's `max-width: 100%` then clamps the icon to that. Pinning both
+ * the box and the icon keeps them at their intended size in either layout.
+ */
+.service-icon-box {
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
 
-.service-icon-box img { margin: auto; }
+.service-icon-box img {
+  margin: auto;
+  width: 40px;
+  max-width: none;
+}
 
 .service-content-box { text-align: center; }
 
@@ -545,8 +652,9 @@ main {
 .service-item-text {
   color: var(--light-gray);
   font-size: var(--fs-6);
-  font-weight: var(--fw-3);
-  line-height: 1.6;
+  font-weight: var(--fw-300);
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-relaxed);
 }
 
 
@@ -750,12 +858,32 @@ main {
 
 .clients-item img:hover { filter: grayscale(0); }
 
+/* Just the marks. The roles behind them live on the Career tab. */
+.affiliation-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 30px 0 10px;
+}
+
+.affiliation-logo {
+  height: 46px;
+  max-width: 200px;
+  object-fit: contain;
+  /* Flattened to white so three unrelated brand palettes read as one row. */
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+
 
 
 
 
 /*-----------------------------------*\
-  #RESUME
+  #TIMELINE (shared by Career and Education)
 \*-----------------------------------*/
 
 .article-title { margin-bottom: 30px; }
@@ -785,8 +913,48 @@ main {
 
 .timeline-item-title {
   font-size: var(--fs-6);
-  line-height: 1.3;
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-snug);
   margin-bottom: 7px;
+}
+
+/* Dates, employment type and the current flag read as one line of metadata. */
+.role-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.role-type,
+.role-current {
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.role-type {
+  color: var(--light-gray-70);
+  background: hsla(0, 0%, 100%, 0.06);
+  border: 1px solid hsla(0, 0%, 100%, 0.09);
+}
+
+.role-current {
+  color: hsl(145, 50%, 70%);
+  background: hsla(145, 50%, 45%, 0.14);
+  border: 1px solid hsla(145, 50%, 60%, 0.3);
+}
+
+.timeline-item-subtitle {
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-500);
+  letter-spacing: var(--tracking-body);
+  margin-bottom: 5px;
 }
 
 .timeline-list span {
@@ -820,45 +988,104 @@ main {
 .timeline-text {
   color: var(--light-gray);
   font-weight: var(--fw-300);
-  line-height: 1.6;
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-relaxed);
 }
 
 
 /**
- * skills 
+ * skills — grouped tags, not scored bars
  */
 
-.skills-title { margin-bottom: 20px; }
+.career-section-title { margin-bottom: 20px; }
 
-.skills-list { padding: 20px; }
+.career-skills,
+.career-achievements { margin-bottom: 35px; }
 
-
-.skills-item:not(:last-child) { margin-bottom: 15px; }
-
-.skill .title-wrapper {
+.skill-group-list {
   display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 8px;
+  flex-direction: column;
+  gap: 22px;
 }
 
-.skill .title-wrapper data {
+.skill-group-title {
+  color: var(--light-gray-70);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: 10px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tags li {
   color: var(--light-gray);
+  background: hsla(0, 0%, 100%, 0.05);
+  border: 1px solid hsla(0, 0%, 100%, 0.09);
   font-size: var(--fs-7);
+  font-weight: var(--fw-400);
+  letter-spacing: var(--tracking-body);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.achievement-section { margin-bottom: 15px; }
+
+.achievement-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.achievement-content {
+  position: relative;
+  padding: 24px;
+  z-index: 1;
+}
+
+.achievement-org {
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: 6px;
+}
+
+.achievement-title { margin-bottom: 8px; }
+
+.achievement-link {
+  display: inline-block;
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-500);
+  letter-spacing: var(--tracking-body);
+  margin-top: 12px;
+  padding: 6px 12px;
+  border: 1px solid hsla(45, 100%, 72%, 0.25);
+  border-radius: 999px;
+  touch-action: manipulation;
+  transition:
+    background-color var(--transition-1),
+    transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.achievement-link:hover,
+.achievement-link:focus-visible { background: hsla(45, 100%, 72%, 0.1); }
+
+.achievement-link:active { transform: scale(0.97); }
+
+.achievement-detail {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
   font-weight: var(--fw-300);
-}
-
-.skill-progress-bg {
-  background: var(--jet);
-  width: 100%;
-  height: 8px;
-  border-radius: 10px;
-}
-
-.skill-progress-fill {
-  background: var(--text-gradient-yellow);
-  height: 100%;
-  border-radius: inherit;
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-relaxed);
 }
 
 
@@ -887,44 +1114,47 @@ main {
   border: 1px solid var(--jet);
   border-radius: 14px;
   font-size: var(--fs-6);
-  font-weight: var(--fw-300);
+  font-weight: var(--fw-400);
+  transition: transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.filter-select.active .select-icon { transform: rotate(0.5turn); }
-
+/* Anchored to its trigger: the panel grows out of the button that opened it,
+   so the spatial relationship between the two stays obvious. */
 .select-list {
-  background: var(--eerie-black-2);
+  background: hsla(240, 2%, 10%, 0.86);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   position: absolute;
   top: calc(100% + 6px);
   width: 100%;
   padding: 6px;
   border: 1px solid var(--jet);
+  border-top-color: hsla(0, 0%, 100%, 0.12);
   border-radius: 14px;
+  box-shadow: var(--shadow-3);
+  transform-origin: top center;
   z-index: 2;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: 0.15s ease-in-out;
-}
-
-.filter-select.active + .select-list {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
 }
 
 .select-item button {
-  background: var(--eerie-black-2);
+  background: transparent;
   color: var(--light-gray);
   font-size: var(--fs-6);
-  font-weight: var(--fw-300);
+  font-weight: var(--fw-400);
   text-transform: capitalize;
   width: 100%;
-  padding: 8px 10px;
+  padding: 9px 10px;
   border-radius: 8px;
+  transition:
+    background-color var(--transition-1),
+    color var(--transition-1),
+    transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.select-item button:hover { --eerie-black-2: hsl(240, 2%, 20%); }
+.select-item button:hover,
+.select-item button:focus-visible { background: hsla(0, 0%, 100%, 0.07); }
+
+.select-item button[aria-selected="true"] { color: var(--orange-yellow-crayola); }
 
 .project-list {
   display: grid;
@@ -941,8 +1171,8 @@ main {
 }
 
 @keyframes scaleUp {
-  0% { transform: scale(0.5); }
-  100% { transform: scale(1); }
+  0% { transform: scale(0.96); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .project-item > a { width: 100%; }
@@ -1009,104 +1239,55 @@ main {
 .project-title {
   color: var(--white-2);
   font-size: var(--fs-5);
-  font-weight: var(--fw-400);
+  font-weight: var(--fw-500);
   text-transform: capitalize;
-  line-height: 1.3;
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-snug);
 }
+
+.project-title { margin-top: 15px; }
 
 .project-category {
-  color: var(--light-gray-70);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: 8px;
 }
 
-
-
-
-
-/*-----------------------------------*\
-  #BLOG
-\*-----------------------------------*/
-
-.blog-posts { margin-bottom: 10px; }
-
-.blog-posts-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.blog-post-item > a {
-  position: relative;
-  background: var(--border-gradient-onyx);
-  height: 100%;
-  box-shadow: var(--shadow-4);
-  border-radius: 16px;
-  z-index: 1;
-}
-
-.blog-post-item > a::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  background: var(--eerie-black-1);
-  z-index: -1;
-}
-
-.blog-banner-box {
-  width: 100%;
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.blog-banner-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: var(--transition-1);
-}
-
-.blog-post-item > a:hover .blog-banner-box img { transform: scale(1.1); }
-
-.blog-content { padding: 15px; }
-
-.blog-meta {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 10px;
-}
-
-.blog-meta :is(.blog-category, time) {
-  color: var(--light-gray-70);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
-}
-
-.blog-meta .dot {
-  background: var(--light-gray-70);
-  width: 4px;
-  height: 4px;
-  border-radius: 4px;
-}
-
-.blog-item-title {
-  margin-bottom: 10px;
-  line-height: 1.3;
-  transition: var(--transition-1);
-}
-
-.blog-post-item > a:hover .blog-item-title { color: var(--orange-yellow-crayola); }
-
-.blog-text {
+.project-description {
   color: var(--light-gray);
   font-size: var(--fs-6);
   font-weight: var(--fw-300);
-  line-height: 1.6;
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-relaxed);
+  margin-left: 10px;
 }
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-500);
+  letter-spacing: var(--tracking-body);
+  margin: 12px 0 0 10px;
+  padding: 6px 12px;
+  border: 1px solid hsla(45, 100%, 72%, 0.25);
+  border-radius: 999px;
+  width: max-content;
+  touch-action: manipulation;
+  transition:
+    background-color var(--transition-1),
+    transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.project-link:hover,
+.project-link:focus-visible { background: hsla(45, 100%, 72%, 0.1); }
+
+.project-link:active { transform: scale(0.97); }
 
 
 
@@ -1156,9 +1337,87 @@ main {
   outline: none;
 }
 
-.form-input::placeholder { font-weight: var(--fw-500); }
+.form-input {
+  letter-spacing: var(--tracking-body);
+  transition: border-color var(--transition-1);
+}
+
+.form-input::placeholder {
+  color: var(--light-gray-70);
+  font-weight: var(--fw-400);
+  opacity: 0.65;
+}
 
 .form-input:focus { border-color: var(--orange-yellow-crayola); }
+
+.form-input.has-error,
+.form-input.has-error:focus { border-color: var(--bittersweet-shimmer); }
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * The message sits directly under the field it is about: a control and the
+ * thing that explains it belong next to each other.
+ */
+.field-error {
+  overflow: hidden;
+  color: hsl(0, 65%, 68%);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-400);
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-normal);
+  padding-left: 4px;
+}
+
+.field-error::before {
+  content: "";
+  display: block;
+  height: 8px;
+}
+
+.form-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.form-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: hsl(145, 50%, 65%);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-400);
+  letter-spacing: var(--tracking-body);
+}
+
+.form-status svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.form-status--error { color: hsl(0, 65%, 70%); }
+
+.form-btn:disabled { cursor: progress; }
+
+/* Underlined rather than colour-only, so the link is findable without
+   relying on hue alone. */
+.inline-link {
+  color: var(--orange-yellow-crayola);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  display: inline;
+  transition: opacity var(--transition-1);
+}
+
+.inline-link:hover,
+.inline-link:focus-visible { opacity: 0.75; }
 
 textarea.form-input {
   min-height: 100px;
@@ -1169,8 +1428,6 @@ textarea.form-input {
 }
 
 textarea.form-input::-webkit-resizer { display: none; }
-
-.form-input:focus:invalid { border-color: var(--bittersweet-shimmer); }
 
 .form-btn {
   position: relative;
@@ -1220,6 +1477,75 @@ textarea.form-input::-webkit-resizer { display: none; }
 
 
 /*-----------------------------------*\
+  #PRESS FEEDBACK
+\*-----------------------------------*/
+
+/**
+ * Feedback belongs on pointer-down, not on release. Acknowledging a press only
+ * once the click completes is the fastest way to make an interface feel dead,
+ * so every control here answers the instant it is touched.
+ *
+ * `touch-action: manipulation` drops the legacy ~300ms tap delay, which is
+ * latency on the input path that buys nothing.
+ */
+
+.navbar-link,
+.filter-select,
+.select-item button,
+.info_more-btn,
+.form-btn,
+.social-item .social-link,
+.modal-close-btn,
+.filter-item button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* These two inherit a 0.25s all-property transition; a press wants ~100ms. */
+.info_more-btn,
+.form-btn {
+  transition:
+    background var(--transition-1),
+    opacity var(--transition-1),
+    transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.info_more-btn::before,
+.form-btn::before { transition: background var(--transition-1); }
+
+.navbar-link:active,
+.filter-select:active,
+.select-item button:active,
+.filter-item button:active,
+.form-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Small isolated targets can take a deeper press without looking broken. */
+.social-item .social-link:active,
+.info_more-btn:active,
+.modal-close-btn:active {
+  transform: scale(0.9);
+}
+
+/**
+ * Keyboard focus deserves a real ring rather than the default outline colour
+ * landing on every mouse click too.
+ */
+:focus-visible {
+  outline: 2px solid var(--orange-yellow-crayola);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.navbar-link:focus-visible,
+.filter-item button:focus-visible { border-radius: 8px; }
+
+
+
+
+
+/*-----------------------------------*\
   #RESPONSIVE
 \*-----------------------------------*/
 
@@ -1241,8 +1567,7 @@ textarea.form-input::-webkit-resizer { display: none; }
    * #PORTFOLIO, BLOG 
    */
 
-  .project-img,
-  .blog-banner-box { height: auto; }
+  .project-img { height: auto; }
 
 }
 
@@ -1266,13 +1591,13 @@ textarea.form-input::-webkit-resizer { display: none; }
      * typography
      */
 
-    --fs-1: 32px;
-    --fs-2: 24px;
-    --fs-3: 26px;
-    --fs-4: 18px;
-    --fs-6: 15px;
-    --fs-7: 15px;
-    --fs-8: 12px;
+    --fs-1: 2rem;       /* 32px */
+    --fs-2: 1.5rem;     /* 24px */
+    --fs-3: 1.625rem;   /* 26px */
+    --fs-4: 1.125rem;   /* 18px */
+    --fs-6: 0.9375rem;  /* 15px */
+    --fs-7: 0.9375rem;  /* 15px */
+    --fs-8: 0.75rem;    /* 12px */
 
   }
 
@@ -1322,12 +1647,7 @@ textarea.form-input::-webkit-resizer { display: none; }
    * #SIDEBAR
    */
 
-  .sidebar {
-    max-height: 180px;
-    margin-bottom: 30px;
-  }
-
-  .sidebar.active { max-height: 584px; }
+  .sidebar { margin-bottom: 30px; }
 
   .sidebar-info { gap: 25px; }
 
@@ -1371,7 +1691,7 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .navbar-list { gap: 20px; }
 
-  .navbar-link { --fs-8: 14px; }
+  .navbar-link { --fs-8: 0.875rem; }
 
 
 
@@ -1476,6 +1796,8 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .clients-item { min-width: calc(33.33% - 35px); }
 
+  .affiliation-list { gap: 60px; }
+
 
 
   /**
@@ -1492,19 +1814,13 @@ textarea.form-input::-webkit-resizer { display: none; }
     left: -43px;
   }
 
-  .skills-item:not(:last-child) { margin-bottom: 25px; }
-
 
 
   /**
    * #PORTFOLIO, BLOG
    */
 
-  .project-img, .blog-banner-box { border-radius: 16px; }
-
-  .blog-posts-list { gap: 30px; }
-
-  .blog-content { padding: 25px; }
+  .project-img { border-radius: 16px; }
 
 
 
@@ -1527,7 +1843,7 @@ textarea.form-input::-webkit-resizer { display: none; }
   textarea.form-input { margin-bottom: 30px; }
 
   .form-btn {
-    --fs-6: 16px;
+    --fs-6: 1rem;
     padding: 16px 20px;
   }
 
@@ -1570,7 +1886,7 @@ textarea.form-input::-webkit-resizer { display: none; }
    * NAVBAR
    */
 
-  .navbar-link { --fs-8: 15px; }
+  .navbar-link { --fs-8: 0.9375rem; }
 
 
 
@@ -1609,16 +1925,18 @@ textarea.form-input::-webkit-resizer { display: none; }
   .filter-item button {
     color: var(--light-gray);
     font-size: var(--fs-5);
-    transition: var(--transition-1);
+    transition:
+      color var(--transition-1),
+      transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   .filter-item button:hover { color: var(--light-gray-70); }
 
   .filter-item button.active { color: var(--orange-yellow-crayola); }
 
-  /* portfolio and blog grid */
+  /* portfolio grid */
 
-  .project-list, .blog-posts-list { grid-template-columns: 1fr 1fr; }
+  .project-list { grid-template-columns: 1fr 1fr; }
 
 
 
@@ -1632,6 +1950,15 @@ textarea.form-input::-webkit-resizer { display: none; }
     width: max-content;
     margin-left: auto;
   }
+
+  .form-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* The status message takes the slack; the button keeps its own width. */
+  .form-footer .form-btn { flex-shrink: 0; }
   
 }
 
@@ -1692,6 +2019,8 @@ textarea.form-input::-webkit-resizer { display: none; }
    * NAVBAR
    */
 
+  /* The bar floats over the top-right of the article, so it has to stay narrow
+     enough that the section heading beside it is never painted over. */
   .navbar {
     position: absolute;
     bottom: auto;
@@ -1699,15 +2028,19 @@ textarea.form-input::-webkit-resizer { display: none; }
     left: auto;
     right: 0;
     width: max-content;
+    max-width: 72%;
     border-radius: 0 20px;
-    padding: 0 20px;
+    padding: 0 12px;
     box-shadow: none;
   }
 
   .navbar-list {
-    gap: 30px;
-    padding: 0 20px;
+    gap: 16px;
+    padding: 0 10px;
   }
+
+  /* Long headings wrap rather than sliding under the bar. */
+  .article-title { max-width: 62%; }
 
   .navbar-link { font-weight: var(--fw-500); }
 
@@ -1723,6 +2056,8 @@ textarea.form-input::-webkit-resizer { display: none; }
     grid-template-columns: 1fr 1fr;
     gap: 20px 25px;
   }
+
+  .achievement-list { grid-template-columns: 1fr 1fr; }
 
   /* testimonials */
 
@@ -1741,12 +2076,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   .project-list { grid-template-columns: repeat(3, 1fr); }
 
 
-
-  /**
-   * BLOG
-   */
-
-  .blog-banner-box { height: 230px; }
 
 }
 
@@ -1820,7 +2149,6 @@ textarea.form-input::-webkit-resizer { display: none; }
   .sidebar {
     position: sticky;
     top: 60px;
-    max-height: max-content;
     height: 100%;
     margin-bottom: 0;
     padding-top: 60px;
@@ -1840,11 +2168,6 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .info_more-btn { display: none; }
 
-  .sidebar-info_more {
-    opacity: 1;
-    visibility: visible;
-  }
-
   .contacts-list { grid-template-columns: 1fr; }
 
   .contact-info :is(.contact-link) {
@@ -1854,7 +2177,7 @@ textarea.form-input::-webkit-resizer { display: none; }
   }
 
   .contact-info :is(.contact-link, time, address) {
-    --fs-7: 14px;
+    --fs-7: 0.875rem;
     font-weight: var(--fw-300);
   }
 
@@ -1872,5 +2195,113 @@ textarea.form-input::-webkit-resizer { display: none; }
 	 */
 
   .timeline-text { max-width: 700px; }
+
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #ACCESSIBILITY PREFERENCES
+\*-----------------------------------*/
+
+/**
+ * Reduced motion does not mean no feedback — it means a gentler, non-vestibular
+ * equivalent. Opacity and colour changes aid comprehension and are kept;
+ * travel, scale and overshoot are what get dropped.
+ */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Presses answer with a dip in opacity instead of a scale. */
+  .navbar-link:active,
+  .filter-select:active,
+  .select-item button:active,
+  .filter-item button:active,
+  .form-btn:active:not(:disabled),
+  .social-item .social-link:active,
+  .info_more-btn:active,
+  .modal-close-btn:active {
+    transform: none;
+    opacity: 0.6;
+  }
+
+  /* No parallax-style drift on imagery. */
+  .project-item > a:hover img,
+  .project-item > a:hover .project-item-icon-box {
+    transform: none;
+  }
+
+  .testimonials-list,
+  .clients-list { scroll-behavior: auto; }
+
+}
+
+
+/**
+ * Frostier, not glassier: raise the background opacity and drop the blur
+ * rather than removing the surface distinction altogether.
+ */
+@media (prefers-reduced-transparency: reduce) {
+
+  .sidebar,
+  article {
+    background: hsl(240, 2%, 10%);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .navbar {
+    background: hsl(240, 3%, 8%);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .navbar::before { display: none; }
+
+  .select-list {
+    background: hsl(240, 2%, 10%);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+}
+
+
+/**
+ * Near-solid backgrounds with defined, contrasting borders.
+ */
+@media (prefers-contrast: more) {
+
+  :root {
+    --light-gray: hsl(0, 0%, 96%);
+    --light-gray-70: hsl(0, 0%, 88%);
+    --jet: hsl(0, 0%, 45%);
+  }
+
+  .sidebar,
+  article {
+    background: hsl(240, 2%, 7%);
+    border-color: hsl(0, 0%, 48%);
+  }
+
+  .navbar {
+    background: hsl(240, 3%, 6%);
+    border-color: hsl(0, 0%, 48%);
+  }
+
+  .form-input,
+  .filter-select,
+  .select-list { border-color: hsl(0, 0%, 48%); }
+
+  .navbar::before { display: none; }
 
 }

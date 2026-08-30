@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
+import { motion, useMotionValue, useAnimationFrame, useTransform, useReducedMotion } from 'motion/react';
 
 interface ShinyTextProps {
   text: string;
@@ -29,6 +29,13 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   delay = 0
 }) => {
   const [isPaused, setIsPaused] = useState(false);
+  /**
+   * A shimmer that loops every few seconds is exactly the kind of slow
+   * oscillation reduced-motion asks us to drop, so the sweep parks itself and
+   * the text renders as a flat gradient.
+   */
+  const reduceMotion = useReducedMotion();
+  const isDisabled = disabled || reduceMotion === true;
   const progress = useMotionValue(0);
   const elapsedRef = useRef(0);
   const lastTimeRef = useRef<number | null>(null);
@@ -38,7 +45,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   const delayDuration = delay * 1000;
 
   useAnimationFrame(time => {
-    if (disabled || isPaused) {
+    if (isDisabled || isPaused) {
       lastTimeRef.current = null;
       return;
     }

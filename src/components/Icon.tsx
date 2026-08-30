@@ -6,7 +6,15 @@ interface IconProps {
   size?: number | string;
 }
 
+/**
+ * Every glyph carries the `icon` class so the stylesheet can size it in `em`.
+ * Without it these SVGs have no intrinsic size: inside a flex parent they
+ * collapse to 0x0 (the social links and both chevrons were invisible), and
+ * inside a centred box they stretch to fill it edge to edge.
+ */
 export const Icon: React.FC<IconProps> = ({ name, className, size }) => {
+  className = ['icon', className].filter(Boolean).join(' ');
+
   switch (name) {
     case 'chevron-down':
       return (
@@ -91,6 +99,13 @@ export const Icon: React.FC<IconProps> = ({ name, className, size }) => {
           <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="48" d="M368 368L144 144M368 144L144 368"/>
         </svg>
       );
+    case 'briefcase-outline':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={className} width={size} height={size} fill="currentColor">
+          <rect x="32" y="128" width="448" height="320" rx="48" ry="48" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="32"/>
+          <path d="M144 128V96a32 32 0 0132-32h160a32 32 0 0132 32v32M480 240H32M320 240v24a8 8 0 01-8 8H200a8 8 0 01-8-8v-24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"/>
+        </svg>
+      );
     case 'book-outline':
       return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={className} width={size} height={size} fill="currentColor">
@@ -102,6 +117,20 @@ export const Icon: React.FC<IconProps> = ({ name, className, size }) => {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={className} width={size} height={size} fill="currentColor">
           <path d="M256 80c-112 0-208 80-256 176 48 96 144 176 256 176s208-80 256-176C464 160 368 80 256 80z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"/>
           <circle cx="256" cy="256" r="80" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"/>
+        </svg>
+      );
+    case 'open-outline':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={className} width={size} height={size} fill="currentColor">
+          <path d="M384 224v184a40 40 0 01-40 40H104a40 40 0 01-40-40V168a40 40 0 0140-40h184" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32"/>
+          <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" d="M336 64h112v112M224 288L440 72"/>
+        </svg>
+      );
+    case 'checkmark-circle':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className={className} width={size} height={size} fill="currentColor">
+          <circle cx="256" cy="256" r="208" fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="32"/>
+          <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" d="M352 176L217.6 336 160 272"/>
         </svg>
       );
     case 'paper-plane':

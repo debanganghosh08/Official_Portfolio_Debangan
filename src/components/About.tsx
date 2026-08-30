@@ -4,25 +4,32 @@ import ShinyText from './ShinyText';
 
 const servicesData = [
   {
-    title: 'AI & Agentic Workflows',
-    text: 'Designing and integrating Generative AI solutions, including Retrieval-Augmented Generation (RAG) pipelines and multi-agent systems using LangChain and CrewAI.',
-    icon: '/assets/images/icon-design.svg',
-  },
-  {
-    title: 'Backend Engineering',
-    text: 'Building robust, scalable REST APIs and automating CI/CD deployment pipelines using Python (FastAPI, Flask) and Docker to ensure fast, reliable system performance.',
+    title: 'Backend & API Engineering',
+    text: 'Building and refactoring production services in TypeScript and Python — class-based architectures with DTOs on Node.js and Express, and FastAPI services backed by Celery and Redis.',
     icon: '/assets/images/icon-dev.svg',
   },
   {
-    title: 'Full-Stack Development',
-    text: 'Architecting end-to-end web applications with modern frontend frameworks like React and Next.js, backed by secure relational and NoSQL databases.',
+    title: 'Developer Tooling & Standards',
+    text: 'Turning a team’s conventions into something written down and enforceable — reusable skills, codified project rules, and Markdown memory systems that carry architectural context between sessions.',
+    icon: '/assets/images/icon-design.svg',
+  },
+  {
+    title: 'Data Pipelines & Integrations',
+    text: 'Making large data imports survive contact with production — chunked bulk upserts that avoid N+1 queries, tenant-scoped deduplication, and third-party ingestion from HubSpot, Salesforce and CSV sources.',
     icon: '/assets/images/icon-app.svg',
   },
   {
-    title: 'Data Analytics & ML',
-    text: 'Developing comprehensive data processing pipelines, performing exploratory data analysis (EDA), and training predictive models using PyTorch and traditional ML libraries.',
+    title: 'Applied Machine Learning',
+    text: 'Retrieval pipelines with FAISS and ChromaDB, semantic matching on embedding models, LoRA fine-tuning on open-weight models, and the evaluation harnesses needed to tell whether any of it actually worked.',
     icon: '/assets/images/icon-photo.svg',
   },
+];
+
+/** The marks alone, with the roles behind them living on the Career tab. */
+const affiliations = [
+  { name: 'Vempower Ventures', image: '/assets/images/vempower-logo-dark.png' },
+  { name: 'Google DeepMind', image: '/assets/images/deepmind.png' },
+  { name: 'PlayTo', image: '/assets/images/playto.png' },
 ];
 
 export const About: React.FC = () => {
@@ -36,22 +43,35 @@ export const About: React.FC = () => {
 
       <section className="about-text">
         <p>
-          Hello! I am a Computer Science graduate who is deeply passionate about bridging the gap between advanced 
-          artificial intelligence and practical, scalable software. I thrive on turning complex problems into elegant, 
-          data-driven solutions.
+          I am a software developer working on backend systems and applied AI, across roles as a
+          software developer, backend engineer and AI engineer. I work mainly in Python,
+          JavaScript, SQL and C++, with FastAPI, Docker, PyTorch and TensorFlow, and I am active
+          on Kaggle where my best global ranking is 962. Earlier in 2026 I contributed to Google
+          DeepMind&apos;s open-source JAX privacy repository and was{' '}
+          <a
+            className="inline-link"
+            href="https://arxiv.org/pdf/2602.17861#search=%22Debangan%20Ghosh%22"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            acknowledged in one of their research papers
+          </a>
+          .
         </p>
 
         <p>
-          My journey has taken me from architecting full-stack web applications to contributing mathematical fixes to 
-          world-class open-source repositories. While my background includes hands-on experience building end-to-end ML 
-          pipelines and generative AI systems, I remain a curious, highly adaptable learner at heart. I am always eager to 
-          collaborate with cross-functional teams, write clean code, and build products that make a real-world impact.
+          Something I care about is making AI tooling genuinely useful inside a real codebase,
+          rather than a novelty bolted on the side. That has meant writing agent skills,
+          codifying team conventions as rules an agent can follow, and building persistent
+          memory systems so context survives between sessions. I am still early in my career and
+          learning quickly, and I enjoy work where the hard part is understood properly before it
+          gets built.
         </p>
       </section>
 
       {/* Services */}
       <section className="service">
-        <h3 className="h3 service-title">What i'm doing</h3>
+        <h3 className="h3 service-title">What i&apos;m doing</h3>
         <ul className="service-list">
           {servicesData.map((service, index) => (
             <BorderGlow
@@ -77,40 +97,22 @@ export const About: React.FC = () => {
         </ul>
       </section>
 
-      {/* Contributions & Internships */}
+      {/* Where I have worked */}
       <section className="clients">
-        <h3 className="h3 clients-title">Contributions & Internships</h3>
-        <div 
-          style={{ 
-            display: 'flex', 
-            gap: '60px', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            flexWrap: 'wrap', 
-            padding: '30px 0' 
-          }}
-        >
-          <img 
-            src="/assets/images/deepmind.png" 
-            alt="Google DeepMind" 
-            style={{ 
-              maxHeight: '90px', 
-              maxWidth: '280px', 
-              objectFit: 'contain',
-              filter: 'brightness(0) invert(1) opacity(0.8)' // Whitens logo to look clean on dark backgrounds
-            }} 
-          />
-          <img 
-            src="/assets/images/playto.png" 
-            alt="PlayTo" 
-            style={{ 
-              maxHeight: '90px', 
-              maxWidth: '280px', 
-              objectFit: 'contain',
-              filter: 'brightness(0) invert(1) opacity(0.8)' // Whitens logo to look clean on dark backgrounds
-            }} 
-          />
-        </div>
+        <h3 className="h3 clients-title">Contributions &amp; Internships</h3>
+
+        <ul className="affiliation-list">
+          {affiliations.map((item) => (
+            <li key={item.name} className="affiliation-item">
+              <img
+                className="affiliation-logo"
+                src={item.image}
+                alt={item.name}
+                loading="lazy"
+              />
+            </li>
+          ))}
+        </ul>
       </section>
     </article>
   );
