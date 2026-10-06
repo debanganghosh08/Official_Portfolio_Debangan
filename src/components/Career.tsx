@@ -26,9 +26,10 @@ const experienceData: Role[] = [
   {
     title: 'Backend & AI Engineer',
     company: 'SPARQ Labs',
-    date: 'May 2026 — July 2026',
+    date: 'May 2026 — Present',
     type: 'Internship',
-    text: 'Built backend services and data pipelines for a multi-tenant GTM attribution platform in Python and FastAPI. I contributed 41 of the repository’s 158 commits, working on the attribution engine’s data flow, chunked bulk database operations that stopped large imports from crashing, and a tenant-scoping fix that closed a cross-tenant data leak in the HubSpot integration.',
+    current: true,
+    text: 'Engineering for SparqAI, a multi-tenant GTM ROI platform in Python, FastAPI and PostgreSQL with a Next.js frontend. I started in May on the attribution engine’s data flow and chunked bulk imports, and have owned the codebase end to end since late June. In September and October I took the product from a local prototype to a hosted deployment on Render and Vercel, grew the backend suite from 487 to 633 passing tests, built and debugged live CRM, outbound-email, Meta Ads and HR integrations, repaired 710 duplicate records, fixed ROI maths that was rewarding lost deals, and wrote the twelve-sprint roadmap before shipping CEO-approved redesigns of the Deals and Audit Log pages.',
   },
   {
     title: 'Core Research Engineering Contributor',
@@ -60,20 +61,51 @@ const skillGroups: { group: string; items: string[] }[] = [
   {
     /* Capabilities rather than product names: what gets built, not what it is built in. */
     group: 'Agentic AI Tooling',
-    items: ['Agent Skills & Rules', 'Context Memory Systems', 'RAG Pipelines', 'Evaluation Harnesses', 'MCP'],
+    items: [
+      'Agent Harnesses & Hooks',
+      'Agent Skills & Rules',
+      'Context Memory Systems',
+      'Provider-Agnostic LLM Layers',
+      'Prompt-Injection Defence',
+      'LLM Evaluation Harnesses',
+      'RAG Pipelines',
+      'MCP',
+    ],
   },
   {
     group: 'Backend & APIs',
-    items: ['FastAPI', 'Node.js', 'Express', 'REST APIs', 'Celery', 'Redis'],
+    items: ['FastAPI', 'SQLAlchemy', 'Alembic', 'Pydantic', 'pytest', 'Node.js', 'Express', 'REST APIs', 'Celery', 'Redis'],
+  },
+  {
+    /* The maths and data problems behind the SparqAI and LORD work. */
+    group: 'Data & Algorithms',
+    items: [
+      'Multi-Touch Attribution',
+      'Markov Chains & Shapley Values',
+      'Identity Resolution',
+      'Deduplication',
+      'Bounded API Ingestion',
+      'Static Analysis (AST)',
+    ],
   },
   {
     group: 'Cloud & Infrastructure',
-    items: ['AWS Cognito', 'DynamoDB', 'GCP Vertex AI', 'Cloud Functions', 'Docker', 'Vercel'],
+    items: ['AWS Cognito', 'DynamoDB', 'GCP Vertex AI', 'Cloud Functions', 'Docker', 'Render', 'Vercel'],
   },
-  { group: 'Frontend', items: ['React', 'Next.js', 'Tailwind CSS'] },
+  { group: 'Frontend', items: ['React', 'Next.js', 'Tailwind CSS', 'Recharts'] },
   {
     group: 'Data & Storage',
-    items: ['PostgreSQL', 'MySQL', 'MongoDB', 'FAISS', 'ChromaDB', 'Pinecone'],
+    items: ['PostgreSQL', 'SQLite', 'MySQL', 'MongoDB', 'FAISS', 'ChromaDB', 'Pinecone'],
+  },
+  {
+    group: 'Product & Process',
+    items: [
+      'Product Roadmaps',
+      'UX Mockups',
+      'Architecture Decision Records',
+      'Technical Documentation',
+      'Privacy by Design',
+    ],
   },
 ];
 

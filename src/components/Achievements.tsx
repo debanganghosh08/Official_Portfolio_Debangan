@@ -21,6 +21,20 @@ const achievements: Achievement[] = [
     linkLabel: 'Read the paper',
   },
   {
+    title: 'Released LORD, an open-source engineering harness',
+    org: 'Open Source',
+    detail:
+      'A model-agnostic Google Antigravity plugin that makes any IDE coding agent investigate, reuse, trace root causes and verify before claiming done, on standard-library Python with no model API. Live evaluation with Gemini 3.1 Pro moved an eight-scenario acceptance series from 1 pass, 6 partial and 1 fail to 4 pass, 4 partial and 0 fail between baselines.',
+    link: 'https://github.com/debanganghosh08/LORD_CLAUDE',
+    linkLabel: 'View the repository',
+  },
+  {
+    title: 'Took SparqAI from prototype to production',
+    org: 'SPARQ Labs',
+    detail:
+      'Deployed the platform on Render and Vercel, grew the backend suite from 487 to 633 passing tests, and cleared a pre-deploy sweep of 2,350 API requests and 21 page loads with zero errors before client onboarding.',
+  },
+  {
     title: 'Best global ranking of 962',
     org: 'Kaggle',
     detail:

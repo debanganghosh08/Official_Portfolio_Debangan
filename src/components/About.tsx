@@ -5,17 +5,17 @@ import ShinyText from './ShinyText';
 const servicesData = [
   {
     title: 'Backend & API Engineering',
-    text: 'Building and refactoring production services in TypeScript and Python — class-based architectures with DTOs on Node.js and Express, and FastAPI services backed by Celery and Redis.',
+    text: 'Building and running production services in Python and TypeScript — FastAPI with SQLAlchemy, Alembic and PostgreSQL deployed on Render, and class-based Node.js and Express services with DTOs. Multi-tenant scoping, rate limiting and background jobs included.',
     icon: '/assets/images/icon-dev.svg',
   },
   {
-    title: 'Developer Tooling & Standards',
-    text: 'Turning a team’s conventions into something written down and enforceable — reusable skills, codified project rules, and Markdown memory systems that carry architectural context between sessions.',
+    title: 'Agent Harnesses & Tooling',
+    text: 'Making AI coding agents behave like careful engineers inside a real codebase — harnesses with enforcement hooks, reusable skills and rules, Markdown memory that carries context between sessions, and evaluations that measure the difference rather than assert it.',
     icon: '/assets/images/icon-design.svg',
   },
   {
     title: 'Data Pipelines & Integrations',
-    text: 'Making large data imports survive contact with production — chunked bulk upserts that avoid N+1 queries, tenant-scoped deduplication, and third-party ingestion from HubSpot, Salesforce and CSV sources.',
+    text: 'Making third-party data survive contact with production — bounded, resumable ingestion from CRM, ad, outbound-email and HR APIs, conservative deduplication on exact keys, chunked bulk upserts, and attribution maths that reconciles to the P&L.',
     icon: '/assets/images/icon-app.svg',
   },
   {
@@ -61,11 +61,23 @@ export const About: React.FC = () => {
 
         <p>
           Something I care about is making AI tooling genuinely useful inside a real codebase,
-          rather than a novelty bolted on the side. That has meant writing agent skills,
-          codifying team conventions as rules an agent can follow, and building persistent
-          memory systems so context survives between sessions. I am still early in my career and
-          learning quickly, and I enjoy work where the hard part is understood properly before it
-          gets built.
+          rather than a novelty bolted on the side. Right now that means owning the engineering
+          of SparqAI, a GTM ROI platform that went from a laptop to production this autumn, and
+          building{' '}
+          <a
+            className="inline-link"
+            href="https://github.com/debanganghosh08/LORD_CLAUDE"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LORD
+          </a>
+          , an open-source harness that gives any IDE coding model the discipline of a senior
+          engineer. Alongside those I keep two personal systems, a provider-independent digital
+          twin and an agent-operated job-search pipeline, both built on the same rule: the durable
+          value lives in the specification, the decisions and the tests, not in whichever model
+          wrote the code. I am still early in my career and learning quickly, and I enjoy work
+          where the hard part is understood properly before it gets built.
         </p>
       </section>
 

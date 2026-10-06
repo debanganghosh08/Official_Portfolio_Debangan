@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="ResumeAIOS: a job posting flows through a gated pipeline to a validated PDF">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c1e"/>
+      <stop offset="1" stop-color="#2b2a24"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffdb70"/>
+      <stop offset="1" stop-color="#e5a13c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.9" r="0.7">
+      <stop offset="0" stop-color="#ffdb70" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#ffdb70" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)"/>
+  <rect width="600" height="450" fill="url(#grid)"/>
+  <rect width="600" height="450" fill="url(#glow)"/>
+
+  <text x="300" y="60" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="700" fill="#f8f8f8" letter-spacing="2">ResumeAIOS</text>
+
+  <!-- pipeline row -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="middle">
+    <rect x="40" y="150" width="78" height="44" rx="10" fill="#121214" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="79" y="177" fill="#d6d6d6">job post</text>
+    <path d="M118 172h22" stroke="#ffdb70" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <rect x="140" y="150" width="78" height="44" rx="10" fill="#121214" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="179" y="177" fill="#d6d6d6">evidence</text>
+    <path d="M218 172h22" stroke="#ffdb70" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <rect x="240" y="140" width="4" height="64" rx="2" fill="url(#gold)"/>
+    <text x="242" y="128" fill="#ffdb70">GATE A</text>
+    <path d="M244 172h18" stroke="#ffdb70" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <rect x="262" y="150" width="78" height="44" rx="10" fill="#121214" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="301" y="177" fill="#d6d6d6">write</text>
+    <path d="M340 172h22" stroke="#ffdb70" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <rect x="362" y="150" width="78" height="44" rx="10" fill="#121214" stroke="#ffdb70" stroke-opacity="0.7"/>
+    <text x="401" y="177" fill="#ffdb70">validate</text>
+    <path d="M440 172h22" stroke="#ffdb70" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <rect x="462" y="140" width="4" height="64" rx="2" fill="url(#gold)"/>
+    <text x="464" y="128" fill="#ffdb70">GATE B</text>
+    <path d="M466 172h18" stroke="#ffdb70" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <path d="M486 148h40l14 14v36a4 4 0 0 1-4 4h-50a4 4 0 0 1-4-4v-46a4 4 0 0 1 4-4z" fill="#121214" stroke="#ffffff" stroke-opacity="0.2"/>
+    <path d="M526 148v14h14" fill="none" stroke="#ffffff" stroke-opacity="0.3"/>
+    <text x="511" y="185" fill="#d6d6d6" font-size="10">PDF</text>
+  </g>
+
+  <!-- validator rules -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#9a9a9a">
+    <text x="60" y="246"><tspan fill="#7dcf8a">✓</tspan> every bullet → [KB: file#heading]</text>
+    <text x="60" y="270"><tspan fill="#7dcf8a">✓</tspan> numbers only if [VERIFIED]</text>
+    <text x="60" y="294"><tspan fill="#ff7b72">✗</tspan> architected · spearheaded · owned</text>
+    <text x="60" y="318"><tspan fill="#ff7b72">✗</tspan> employer emails, paths, identifiers</text>
+    <text x="60" y="342"><tspan fill="#7dcf8a">✓</tspan> could I defend this in an interview?</text>
+  </g>
+
+  <!-- discovery note -->
+  <rect x="356" y="228" width="196" height="124" rx="12" fill="#121214" stroke="#ffffff" stroke-opacity="0.1"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" fill="#9a9a9a">
+    <text x="372" y="252" fill="#ffdb70">morning brief</text>
+    <text x="372" y="276">22 sources · 0 errors</text>
+    <text x="372" y="298">693 postings fetched</text>
+    <text x="372" y="320">251 entry-level eligible</text>
+    <text x="372" y="342" fill="#6f6f6f">never auto-submits</text>
+  </g>
+
+  <text x="300" y="412" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="url(#gold)" letter-spacing="1">The knowledge base is the truth. A resume is a projection of it.</text>
+</svg>

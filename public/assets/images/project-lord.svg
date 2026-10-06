@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="LORD: a terminal running python -m lord">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c1e"/>
+      <stop offset="1" stop-color="#2b2a24"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffdb70"/>
+      <stop offset="1" stop-color="#e5a13c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.2" r="0.7">
+      <stop offset="0" stop-color="#ffdb70" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffdb70" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)"/>
+  <rect width="600" height="450" fill="url(#grid)"/>
+  <rect width="600" height="450" fill="url(#glow)"/>
+
+  <text x="300" y="60" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="700" fill="#f8f8f8" letter-spacing="6">LORD</text>
+
+  <!-- terminal window -->
+  <rect x="60" y="88" width="480" height="274" rx="16" fill="#121214" stroke="#ffffff" stroke-opacity="0.08"/>
+  <path d="M60 104a16 16 0 0 1 16-16h448a16 16 0 0 1 16 16v22H60z" fill="#1a1a1c"/>
+  <circle cx="84" cy="107" r="5" fill="#ff5f57"/>
+  <circle cx="102" cy="107" r="5" fill="#febc2e"/>
+  <circle cx="120" cy="107" r="5" fill="#28c840"/>
+  <text x="300" y="112" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#9a9a9a">lord — python -m lord</text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#d6d6d6">
+    <text x="84" y="156"><tspan fill="#ffdb70">$</tspan> python -m lord brief --task "fix import crash"</text>
+    <text x="84" y="184" fill="#9a9a9a">inventory   412 files · symbols indexed</text>
+    <text x="84" y="208"><tspan fill="#ffdb70">reuse</tspan>      extend normalize_batch()  <tspan fill="#7dcf8a">CONFIRMED</tspan></text>
+    <text x="84" y="232"><tspan fill="#ffdb70">impact</tspan>     3 callers · 2 tests · 1 boundary  <tspan fill="#f0c36a">INFERRED</tspan></text>
+    <text x="84" y="256"><tspan fill="#ffdb70">trace</tspan>      root cause: falsy-zero guard, line 118</text>
+    <text x="84" y="284"><tspan fill="#ffdb70">$</tspan> python -m lord verify --run</text>
+    <text x="84" y="308"><tspan fill="#7dcf8a">VERIFIED</tspan>   pytest 255 passed · diff surface: small</text>
+    <text x="84" y="336" fill="#6f6f6f">no model API · no key · no network</text>
+  </g>
+
+  <text x="300" y="404" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17" font-weight="600" fill="url(#gold)" letter-spacing="1">MODEL + LORD = senior-engineer behaviour</text>
+</svg>
